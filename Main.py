@@ -1,6 +1,6 @@
 import requests
 import json
-from Recipe import Recipe
+from .obj.Recipe import Recipe
 from requests.exceptions import HTTPError
 
 with open('UserInput.json', 'r') as input_file:
