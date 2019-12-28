@@ -9,7 +9,7 @@ class Recipe(object):
         self.amount = amount
         self.buy_method = buy_method
         self.daily_craft = daily_craft
-        self.root = Node([self.item_id, self.amount])
+        self.root = Node({'item_id': self.item_id, 'count': self.amount})
 
     def get_recipe_id(self, item_id):
         recipe_search_parameters = {"output": item_id}
@@ -28,22 +28,13 @@ class Recipe(object):
         recipe = requests.get(url)
         ingredients = recipe.json()['ingredients']
         return ingredients
-    
-    def get_cost(self, item_id):
-        total = 0
-        url = "https://api.guildwars2.com/v2/commerce/prices/"
-        for ingredient in self.get_recipe_ingrediants(item_id):
-            tp_data = requests.get(url + str(ingredient['item_id']))
-            tp_price = tp_data.json()['buys']['unit_price']
-            total += tp_price * ingredient['count']
-        return total
 
-    def get_tpcost(self, item_id, amount):
+    def get_tpcost(self, item_data):
         total = 0
         url = "https://api.guildwars2.com/v2/commerce/prices/"
-        tp_data = requests.get(url + str(item_id))
+        tp_data = requests.get(url + str(item_data['item_id']))
         tp_price = tp_data.json()['buys']['unit_price']
-        total += tp_price * amount
+        total += tp_price * item_data['count']
         return total
 
     def create_craft_tree(self, root, item_id):
@@ -51,11 +42,10 @@ class Recipe(object):
             return root
         else:
             for ingredient in self.get_recipe_ingrediants(item_id):
-                print(ingredient)
                 root.add_child(self.create_craft_tree(
-                    Node([self.get_recipe_ingrediants(item_id)]),
+                    Node([ingredient, 
+                    self.get_tpcost(ingredient)]),
                     ingredient['item_id']))
-                
             return root
 
     def create_craft_tree_driver(self):
