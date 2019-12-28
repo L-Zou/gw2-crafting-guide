@@ -5,3 +5,7 @@ class Node(object):
 
     def add_child(self, ingredient):
         self.children.append(ingredient)
+
+    def render_tree(self, ):
+        #"├── ""│   " "└── " "    "
+        return 0

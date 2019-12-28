@@ -4,11 +4,11 @@ from requests.exceptions import HTTPError
 from .CraftingTree import Node
 
 class Recipe(object):
-    def __init__(self, item_id, amount, buy_method, daily_craft):
+    def __init__(self, item_id, amount, buy_method):
         self.item_id = item_id
         self.amount = amount
         self.buy_method = buy_method
-        self.daily_craft = daily_craft
+        #self.daily_craft = daily_craft
         self.root = Node({'item_id': self.item_id, 'count': self.amount})
 
     def get_recipe_id(self, item_id):

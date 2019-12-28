@@ -1,29 +1,18 @@
 from __future__ import print_function, unicode_literals
 from PyInquirer import prompt
-from PyInquirer import Validator, ValidationError
+from obj.NumberValidators import NumberValidator
 from examples import custom_style_3
+from obj.Recipe import Recipe
+from helpers.ItemNametoID import get_item_id
 
 import requests
 import json
 from requests.exceptions import HTTPError
 
-class NumberValidator(Validator):
-    def validate(self, document):
-        try:
-            int(document.text)
-            if(int(document.text) < 1):
-                raise ValidationError(
-                    message='Please enter a number above 0',
-                    cursor_position=len(document.text))
-        except ValueError:
-            raise ValidationError(
-                message='Please enter a number',
-                cursor_position=len(document.text)) 
-
 url="https://api.guildwars2.com"
 response = requests.get(url)
 
-print("""
+print(r"""
 =================================================================
    _______          _____     _____            __ _            
   / ____\ \        / /__ \   / ____|          / _| |           
@@ -33,7 +22,7 @@ print("""
   \_____|   \/  \/   |____|  \_____|_|  \__,_|_|  \__\___|_|   
  =================================================================
 
- """)
+  """)
 
 if not response:
     print("GW2 Crafter is offline.")
@@ -61,6 +50,15 @@ else:
     ]
 
     answers = prompt(questions, style=custom_style_3)
+    item_id = get_item_id(answers['item_name'])
 
-    with open('UserInput.json', 'w') as outfile:
-        json.dump(answers, outfile)
+    if item_id is None:
+        print("Unable to find requested item.")
+    else: 
+        recipe = Recipe(item_id, answers['amount'], answers['buy_method'])
+        crafting_tree = recipe.create_craft_tree_driver()
+        print(crafting_tree)
+
+
+    #with open('UserInput.json', 'w') as outfile:
+        #json.dump(answers, outfile)
