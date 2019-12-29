@@ -7,11 +7,26 @@ from obj.CraftingTree import Node
 from helpers.ItemNametoID import get_item_id
 
 import requests
+
+import itertools
+import threading
+import time
+import sys
+
 import json
 from requests.exceptions import HTTPError
 
 url="https://api.guildwars2.com"
 response = requests.get(url)
+
+done = False
+def animate():
+    for c in itertools.cycle(['|', '/', '-', '\\']):
+        if done:
+            break
+        sys.stdout.write('\rgenerating recipe tree ' + c)
+        sys.stdout.flush()
+        time.sleep(0.1)
 
 print(r"""
 =================================================================
@@ -22,7 +37,6 @@ print(r"""
  | |__| |  \  /\  /   / /_  | |____| | | (_| | | | ||  __/ |   
   \_____|   \/  \/   |____|  \_____|_|  \__,_|_|  \__\___|_|   
  =================================================================
-
   """)
 
 if not response:
@@ -57,7 +71,15 @@ else:
         print("Unable to find requested item.")
     else: 
         recipe = Recipe(item_id, answers['amount'], answers['buy_method'])
+        t = threading.Thread(target=animate)
+        t.start()
+
         crafting_tree = recipe.create_craft_tree_driver()
+        done = True
+        print("")
+        print("")
+        print("RECIPE TREE")
+        print("=======================================================")
         print(crafting_tree)
 
 

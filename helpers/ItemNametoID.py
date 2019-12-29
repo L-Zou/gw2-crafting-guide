@@ -7,13 +7,15 @@ url2 = "https://api.guildwars2.com/v2/items/"
         
 def get_item_id(item_name):
     search_data = requests.get(url1 + str(item_name) + "/1") 
-    if search_data.json()['total'] != 1: 
+    if search_data.json()['total'] == 0: 
         return None
-    else: 
-        item_id = search_data.json()['results'][0]['data_id']
-        return item_id
+    else:
+        for results in search_data.json()['results']:
+            if results['name'] == item_name:
+                return results['data_id']
+        return None
 
 def get_item_name(item_id):
     item_data = requests.get(url2 + str(item_id))
-    item_name = item_data['name']
+    item_name = item_data.json()['name']
     return item_name
