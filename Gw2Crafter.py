@@ -20,7 +20,7 @@ url="https://api.guildwars2.com"
 response = requests.get(url)
 
 done = False
-def animate():
+def loading_animate():
     for c in itertools.cycle(['|', '/', '-', '\\']):
         if done:
             break
@@ -71,7 +71,7 @@ else:
         print("Unable to find requested item.")
     else: 
         recipe = Recipe(item_id, answers['amount'], answers['buy_method'])
-        t = threading.Thread(target=animate)
+        t = threading.Thread(target=loading_animate)
         t.start()
 
         crafting_tree = recipe.create_craft_tree_driver()
