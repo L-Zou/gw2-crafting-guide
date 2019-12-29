@@ -3,6 +3,7 @@ from PyInquirer import prompt
 from obj.NumberValidators import NumberValidator
 from examples import custom_style_3
 from obj.Recipe import Recipe
+from obj.CraftingTree import Node
 from helpers.ItemNametoID import get_item_id
 
 import requests
@@ -58,6 +59,7 @@ else:
         recipe = Recipe(item_id, answers['amount'], answers['buy_method'])
         crafting_tree = recipe.create_craft_tree_driver()
         print(crafting_tree)
+
 
 
     #with open('UserInput.json', 'w') as outfile:
