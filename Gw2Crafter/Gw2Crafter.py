@@ -1,6 +1,7 @@
 from __future__ import print_function, unicode_literals
 from PyInquirer import prompt
 from obj.NumberValidators import NumberValidator
+from obj.ItemValidator import ItemValidator
 from examples import custom_style_3
 from obj.Recipe import Recipe
 from obj.CraftingTree import Node
@@ -30,23 +31,19 @@ def loading_animate():
 
 print(r"""
 =================================================================
-   _______          _____     _____            __ _            
-  / ____\ \        / /__ \   / ____|          / _| |           
- | |  __ \ \  /\  / /   ) | | |     _ __ __ _| |_| |_ ___ _ __ 
- | | |_ | \ \/  \/ /   / /  | |    | '__/ _` |  _| __/ _ \ '__|
- | |__| |  \  /\  /   / /_  | |____| | | (_| | | | ||  __/ |   
-  \_____|   \/  \/   |____|  \_____|_|  \__,_|_|  \__\___|_|   
- =================================================================
+GUILD WARS 2 CRAFTER
+=================================================================
   """)
 
 if not response:
-    print("GW2 Crafter is offline.")
+    print("An error occured.")
 else:
     questions = [
         {
             'type': 'input',
             'name': 'item_name',
-            'message': 'What item would you like to craft?'
+            'message': 'What item would you like to craft?', 
+            'validate': ItemValidator
         }, 
         {
             'type': 'input',
@@ -72,16 +69,24 @@ else:
     else: 
         recipe = Recipe(item_id, answers['amount'], answers['buy_method'])
         t = threading.Thread(target=loading_animate)
-        t.start()
+        #t.start()
 
         crafting_tree = recipe.create_craft_tree_driver()
-        done = True
-        print("")
-        print("")
-        print("RECIPE TREE")
-        print("=======================================================")
-        print(crafting_tree)
+        #done = True  
 
+        print("\n\nRECIPE TREE")
+        print("=================================================================")
+        print(crafting_tree)
+        print("BEST PATH")
+        print("=================================================================")     
+
+        best_path = recipe.find_best_path_drive(crafting_tree, 0)
+        best_path.data = best_path.data[0] 
+        print(best_path)
+
+        print("COST BREAKDOWN")
+        print("=================================================================") 
+        print("Crafting Cost: " + 6)    
 
 
     #with open('UserInput.json', 'w') as outfile:
