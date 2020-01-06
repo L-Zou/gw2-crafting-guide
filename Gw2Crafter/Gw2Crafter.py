@@ -69,10 +69,10 @@ else:
     else: 
         recipe = Recipe(item_id, answers['amount'], answers['buy_method'])
         t = threading.Thread(target=loading_animate)
-        #t.start()
+        t.start()
 
         crafting_tree = recipe.create_craft_tree_driver()
-        #done = True  
+        done = True  
 
         print("\n\nRECIPE TREE")
         print("=================================================================")
