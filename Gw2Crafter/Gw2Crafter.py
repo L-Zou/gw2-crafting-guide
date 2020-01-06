@@ -85,8 +85,11 @@ else:
         print(best_path)
 
         print("COST BREAKDOWN")
-        print("=================================================================") 
-        print("Crafting Cost: " + 6)    
+        print("=================================================================")
+        cost = recipe.calc_crafting_cost_driver(best_path)
+
+        print("Crafting Cost: " + str(cost) + " coppers")  
+        print("Savings: " + str(recipe.get_tpcost(best_path.data[0]) - cost) + " coppers\n") 
 
 
     #with open('UserInput.json', 'w') as outfile:
