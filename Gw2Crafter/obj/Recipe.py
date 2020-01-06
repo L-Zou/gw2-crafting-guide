@@ -37,9 +37,9 @@ class Recipe(object):
         tp_data = requests.get(url + str(item_data['item_id']))
         
         if self.buy_method == 'Place Order':
-            tp_price = tp_data.json()['buys']['unit_price']
-        else: 
             tp_price = tp_data.json()['sells']['unit_price']
+        else: 
+            tp_price = tp_data.json()['buys']['unit_price']
         total += tp_price * item_data['count']
         return total
 
@@ -78,17 +78,22 @@ class Recipe(object):
         tree.data = [tree.data, 1]
         return self.find_best_path(tree, count)
 
-    def calc_crafting_cost(self, root):
+    def calc_crafting_cost(self, root, list):
         if root.children == []:
-            return root.data[1]
+            return list.append(root.data[1])
         else:
-            for ingredient in self.get_recipe_ingrediants(item_id):
-                root.add_child(self.create_craft_tree(
-                    Node([ingredient, 
-                    self.get_tpcost(ingredient)]),
-                    ingredient['item_id']))
-            return root
+            for children in root.children:
+                list.append(self.calc_crafting_cost(children, list))
+            return list
     
     def calc_crafting_cost_driver(self, tree):
         tree.data = [tree.data, 0]
-        return self.calc_crafting_cost(tree)
+        list = []
+        cost = self.calc_crafting_cost(tree, list)
+        total = 0
+        for price in cost: 
+            if price is None:
+                total +=0
+            else:
+                total += price
+        return total
