@@ -1,5 +1,5 @@
 # gw2-crafting-guide
-A python application that allows the user to search for item crafting recipes for the game Guild Wars 2. The application displays the full recipe tree, as well as the most cost efficient recipe tree (based on whether you should craft certain indgredients or buy them from other players). The application also calculates the overall cost of crafting the item, as well as how much money you save buy crafting the item (as opposed to buying it from other players).
+A python application that allows the user to search for item crafting recipes for the game Guild Wars 2. The application retrieves data from the guild wars 2 api. The application displays the full recipe tree, as well as the most cost efficient recipe tree (based on whether you should craft certain indgredients or buy them from other players). The application also calculates the overall cost of crafting the item, as well as how much money you save buy crafting the item (as opposed to buying it from other players).
 ```
 =================================================================
 GUILD WARS 2 CRAFTER
