@@ -44,5 +44,5 @@ https://github.com/L-Zou/gw2-crafting-guide.git
 ```
 Go to the cloned repository (gw2-crafting-guide) and install the required modules with: 
 ```
-###
+pip install
 ```
